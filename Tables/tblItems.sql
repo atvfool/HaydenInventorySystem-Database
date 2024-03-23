@@ -1,0 +1,13 @@
+CREATE TABLE `tblItems` (
+	`intID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`strName` VARCHAR(150) NOT NULL DEFAULT '0' COLLATE 'utf8mb4_general_ci',
+	`strDescription` VARCHAR(2000) NOT NULL DEFAULT '0' COLLATE 'utf8mb4_general_ci',
+	`intTypeID` INT(11) NULL DEFAULT '0',
+	`decPrice` DECIMAL(24,2) NULL DEFAULT NULL,
+	`strUPC` VARCHAR(20) NULL DEFAULT NULL COLLATE 'utf8mb4_general_ci',
+	PRIMARY KEY (`intID`) USING BTREE,
+	UNIQUE INDEX `strUPC` (`strUPC`) USING BTREE
+)
+COLLATE='utf8mb4_general_ci'
+ENGINE=InnoDB
+;
