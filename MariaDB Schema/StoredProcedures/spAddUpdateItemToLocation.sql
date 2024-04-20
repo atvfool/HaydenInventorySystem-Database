@@ -1,7 +1,6 @@
 CREATE DEFINER=`root`@`%` PROCEDURE `spAddUpdateItemToLocation`(
-	IN `intItemID` INT,
-	IN `intLocationID` INT,
-	IN `intQty` INT
+	IN `strUPC` VARCHAR(50),
+	IN `intLocationID` INT
 )
 LANGUAGE SQL
 NOT DETERMINISTIC
@@ -9,8 +8,16 @@ CONTAINS SQL
 SQL SECURITY DEFINER
 COMMENT ''
 BEGIN
-	INSERT INTO tblItemLocations(intItemID, intLocationID, intQty)
-	VALUES(@intItemID, @intLocationID, @intQty)
-	ON DUPLICATE KEY
-	UPDATE intQty = @intQty;
+	SET @intID= (SELECT intID FROM tblItems WHERE strUPC = @strUPC LIMIT 1);
+	-- SELECT @intID;
+	IF @intID IS NULL THEN
+		SELECT 'ITEM NOT FOUND';
+	ELSE
+		INSERT INTO tblItemLocations(intItemID, intLocationID, intQty)
+		VALUES(@intID, intLocationID, 1)
+		ON DUPLICATE KEY
+		UPDATE intQty = intQty + 1;
+		
+		SELECT ROW_COUNT();
+	END IF;
 END
