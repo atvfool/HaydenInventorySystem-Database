@@ -1,8 +1,9 @@
 CREATE DEFINER=`root`@`%` PROCEDURE `spAddItemWithLocation`(
 	IN `intLocationID_p` INT,
-	IN `strName_p` INT,
-	IN `strDescription_p` INT,
-	IN `strUPC_p` INT
+	IN `strName_p` VARCHAR(50),
+	IN `strDescription_p` VARCHAR(2000),
+	IN `strUPC_p` VARCHAR(50),
+	IN `intQty_p` INT
 )
 LANGUAGE SQL
 NOT DETERMINISTIC
@@ -15,6 +16,13 @@ BEGIN
 	
 	SELECT LAST_INSERT_ID();
 	
+	SET @intQty = 1;
+	
+	IF intQty_p IS NOT NULL THEN
+		SET @intQty = intQty_p;
+	END IF;
+		
+	
 	INSERT INTO tblItemLocations(intItemID, intLocationID, intQty)
-	VALUES(LAST_INSERT_ID(), intLocationID_p, 1);
+	VALUES(LAST_INSERT_ID(), intLocationID_p, @intQty);
 END
